@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>טופס סדנאות מעוצב</title>
+  
+  <!-- חיבור לגופן Open Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #1f1f1f;
+      color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      direction: rtl;
+    }
+
+    h1 {
+      text-align: center;
+      color: #e8e8e8;
+    }
+
+    form {
+      background-color: #2c2c2c;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+    }
+
+    label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #f4f4f4;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"], input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      font-size: 16px;
+      background-color: #3d3d3d;
+      color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    p#recommendation {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #007BFF;
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #cccccc;
+    }
+
+    .footer h2 {
+      margin: 0;
+      font-size: 20px;
+      color: #f4f4f4;
+    }
+
+    .footer p {
+      margin: 5px 0;
+      font-size: 16px;
+      color: #bbbbbb;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="workshopForm">
+    <h1>השארת פרטים עבור הסדנאות</h1>
+
+    <label for="name">שם:</label>
+    <input type="text" id="name" name="name" placeholder="הכנס שם" required>
+
+    <label for="email">אימייל:</label>
+    <input type="email" id="email" name="email" placeholder="הכנס אימייל" required>
+
+    <label for="phone">טלפון:</label>
+    <input type="tel" id="phone" name="phone" placeholder="הכנס טלפון" required>
+
+    <label for="experience">כמה שנים יש לך ניסיון?</label>
+    <input type="number" id="experience" name="experience" placeholder="שנות ניסיון" required>
+
+    <label for="clientCount">כמה לקוחות יש לך?</label>
+    <input type="number" id="clientCount" name="clientCount" placeholder="מספר לקוחות" required>
+
+    <input type="submit" value="שלח">
+    
+    <p id="recommendation">נא למלא את הטופס כדי לקבל המלצה.</p>
+  </form>
+
+  <div class="footer">
+    <h2>ירדן פלד</h2>
+    <p>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
+  </div>
+
+  <script>
+    document.getElementById('workshopForm').addEventListener('submit', function(event) {
+      event.preventDefault();  // עוצר את רענון הדף
+
+      // איסוף הנתונים מהטופס
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const experience = document.getElementById('experience').value;
+      const clientCount = document.getElementById('clientCount').value;
+
+      // בדוק אם כל השדות מולאו כמו שצריך
+      if (!name || !email || !phone || !experience || !clientCount) {
+        alert('נא למלא את כל השדות.');
+        return;
+      }
+
+      // הפקת ההמלצה
+      let recommendation = '';
+      if (experience < 5) {
+        recommendation = 'מומלץ להשתתף בסדנה למתחילים!';
+      } else if (experience >= 5 && clientCount < 10) {
+        recommendation = 'מומלץ להשתתף בסדנה למתקדמים!';
+      } else {
+        recommendation = 'מומלץ להשתתף בסדנה מתקדמת עם דגש על אוטומציה!';
+      }
+      document.getElementById('recommendation').innerText = recommendation;
+
+      // הנתונים שנשלחים לוובהוק
+      const formData = {
+        name: name,
+        email: email,
+        phone: phone,
+        experience: experience,
+        clientCount: clientCount,
+        recommendation: recommendation  // הוספת ההמלצה לנתונים שנשלחים
+      };
+
+      // הדפסת הנתונים לקונסול לבדיקת תקינות
+      console.log(JSON.stringify(formData));
+
+      // שליחת הנתונים ל-Webhook
+      fetch('https://hook.eu1.make.com/jq30tqzj467p7as4s28slrsr1yc4w4nw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),  // המרת הנתונים לפורמט JSON
+      })
+      .then(response => response.text())  // קבלת התשובה כטקסט
+      .then(data => {
+        console.log('תשובה מהשרת:', data);
+        alert('הפרטים נשלחו בהצלחה!');
+      })
+      .catch((error) => {
+        console.error('שגיאה בשליחת הפרטים:', error);
+        alert('שגיאה בשליחת הפרטים!');
+      });
+    });
+  </script>
+</body>
+</html>
