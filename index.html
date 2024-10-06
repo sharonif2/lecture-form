@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בדיקת טופס פשוט</title>
+</head>
+<body>
+  <h1>בדיקת שליחת פרטים ל-Webhook</h1>
+
+  <form id="simpleForm">
+    <label for="name">שם:</label><br>
+    <input type="text" id="name" name="name" placeholder="הכנס שם" required><br><br>
+
+    <label for="email">אימייל:</label><br>
+    <input type="email" id="email" name="email" placeholder="הכנס אימייל" required><br><br>
+
+    <input type="submit" value="שלח">
+  </form>
+
+  <script>
+    document.getElementById('simpleForm').addEventListener('submit', function(event) {
+      event.preventDefault();  // עוצר את רענון הדף
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      // הנתונים שנשלחים לוובהוק
+      const formData = {
+        name: name,
+        email: email
+      };
+
+      // הדפסת הנתונים לקונסול לבדיקת תקינות
+      console.log(JSON.stringify(formData));
+
+      // שליחת הנתונים ל-Webhook
+      fetch('https://hook.eu1.make.com/jq30tqzj467p7as4s28slrsr1yc4w4nw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),  // המרת הנתונים לפורמט JSON
+      })
+      .then(response => response.text())  // קבלת התשובה כטקסט
+      .then(data => {
+        console.log('תשובה מהשרת:', data);
+        alert('הפרטים נשלחו בהצלחה!');
+      })
+      .catch((error) => {
+        console.error('שגיאה בשליחת הפרטים:', error);
+        alert('שגיאה בשליחת הפרטים!');
+      });
+    });
+  </script>
+</body>
+</html>
