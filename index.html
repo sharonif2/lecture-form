@@ -240,8 +240,8 @@
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const phone = document.getElementById('phone').value;
-      const experience = document.getElementById('experience').value;
-      const clientCount = document.getElementById('clientCount').value;
+      const experience = parseInt(document.getElementById('experience').value, 10); // שנות ניסיון
+      const clientCount = parseInt(document.getElementById('clientCount').value, 10); // מספר לקוחות
 
       // איסוף מוצרים
       const selectedProducts = Array.from(document.querySelectorAll('input[name="productType"]:checked')).map(cb => cb.value);
@@ -250,30 +250,50 @@
       const usageGoals = Array.from(document.querySelectorAll('input[name="usageGoal"]:checked')).map(cb => cb.value);
 
       // בדוק אם כל השדות מולאו כמו שצריך
-      if (!name || !email || !phone || !experience || !clientCount || selectedProducts.length === 0 || usageGoals.length === 0) {
+      if (!name || !email || !phone || isNaN(experience) || isNaN(clientCount) || selectedProducts.length === 0 || usageGoals.length === 0) {
         alert('נא למלא את כל השדות.');
         return;
       }
 
-      // הפקת ההמלצה
+      // לוגיקת המחולל - המלצה על בסיס ניסיון, לקוחות, ומוצרים נבחרים
       let recommendation = '';
-      if (experience < 5) {
-        recommendation = 'מומלץ להשתתף בסדנה למתחילים!';
-      } else if (experience >= 5 && clientCount < 10) {
-        recommendation = 'מומלץ להשתתף בסדנה למתקדמים!';
-      } else {
-        recommendation = 'מומלץ להשתתף בסדנה מתקדמת עם דגש על אוטומציה!';
-      }
-      document.getElementById('recommendation').innerText = recommendation;
 
-      // הצגת ההמלצה בפופאפ
+      if (experience < 5) {
+        if (clientCount < 10) {
+          recommendation = 'מומלץ להשתתף בסדנה למתחילים עם דגש על גיוס לקוחות חדשים!';
+        } else {
+          recommendation = 'מומלץ להשתתף בסדנה למתחילים עם דגש על שימור לקוחות קיימים!';
+        }
+      } else if (experience >= 5 && experience <= 10) {
+        if (clientCount < 20) {
+          recommendation = 'מומלץ להשתתף בסדנה למתקדמים עם דגש על הרחבת פורטפוליו מוצרים!';
+        } else {
+          recommendation = 'מומלץ להשתתף בסדנה למתקדמים עם דגש על יעול תהליכים ושירות לקוחות!';
+        }
+      } else {
+        if (clientCount < 50) {
+          recommendation = 'מומלץ להשתתף בסדנה למתקדמים עם דגש על פיתוח עסקי ואסטרטגיות צמיחה!';
+        } else {
+          recommendation = 'מומלץ להשתתף בסדנה מתקדמת עם דגש על ניהול לקוחות בקנה מידה גדול!';
+        }
+      }
+
+      // בדיקת מוצרים נבחרים - אפשר להוסיף המלצה לפי סוג המוצרים
+      if (selectedProducts.includes('lifeInsurance') && selectedProducts.includes('businessInsurance')) {
+        recommendation += ' מומלץ להתרכז בניהול מוצרים בעסק והרחבת קווי המוצרים.';
+      } else if (selectedProducts.includes('carInsurance')) {
+        recommendation += ' כדאי להעמיק בתחום ביטוח הרכב עם דגש על שירות לקוחות מהיר.';
+      }
+
+      // הצגת ההמלצה בטופס ובפופאפ
+      document.getElementById('recommendation').innerText = recommendation;
       document.getElementById('popupRecommendation').innerText = recommendation;
 
       // הצגת הפופאפ
       document.querySelector('.popup-background').style.display = 'block';
       document.getElementById('popup').style.display = 'block';
 
-      // הנתונים שנשלחים לוובהוק
+      // שליחת הנתונים ל-Webhook
       const formData = {
         name: name,
         email: email,
