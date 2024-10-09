@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>טופס סדנאות מעוצב</title>
+  <title>מחולל הצעות לסדנאות AI לסוכני ביטוח</title>
   
   <!-- חיבור לגופן Open Sans -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -11,55 +11,70 @@
   <style>
     body {
       font-family: 'Open Sans', sans-serif;
-      background-color: #1f1f1f;
-      color: #f4f4f4;
+      background-color: #ffffff; /* רקע לבן */
+      color: #333333;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding-top: 50px; /* הנמכת כל התוכן */
       direction: rtl;
     }
 
-    h1 {
+    .container {
       text-align: center;
-      color: #e8e8e8;
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    .logo img {
+      max-width: 250px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #d32f2f; /* צבע אדום לכותרת */
+      font-size: 32px;
+      margin-bottom: 20px;
     }
 
     form {
-      background-color: #2c2c2c;
+      background-color: #f9f9f9;
       padding: 40px;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 500px;
       box-sizing: border-box;
+      border: 1px solid #e0e0e0;
     }
 
     label {
       display: block;
       font-size: 16px;
       margin-bottom: 8px;
-      color: #f4f4f4;
+      color: #333333;
     }
 
     input[type="text"], input[type="email"], input[type="tel"], input[type="number"] {
       width: 100%;
       padding: 12px;
       margin-bottom: 20px;
-      border: 1px solid #444;
+      border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 16px;
-      background-color: #3d3d3d;
-      color: #ffffff;
+      background-color: #fdfdfd;
+      color: #333333;
       box-sizing: border-box;
     }
 
     input[type="submit"] {
       width: 100%;
       padding: 12px;
-      background-color: #4CAF50;
+      background-color: #d32f2f; /* צבע אדום לכפתור */
       color: white;
       border: none;
       border-radius: 4px;
@@ -69,63 +84,101 @@
     }
 
     input[type="submit"]:hover {
-      background-color: #45a049;
+      background-color: #c1272d;
     }
 
     p#recommendation {
       margin-top: 20px;
       font-size: 18px;
-      color: #007BFF;
+      color: #d32f2f;
       text-align: center;
     }
 
     .footer {
       margin-top: 40px;
       text-align: center;
-      color: #cccccc;
+      color: #666666;
     }
 
     .footer h2 {
       margin: 0;
       font-size: 20px;
-      color: #f4f4f4;
+      color: #333333;
     }
 
     .footer p {
       margin: 5px 0;
       font-size: 16px;
-      color: #bbbbbb;
+      color: #999999;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-group label {
+      width: 48%;
+      display: flex;
+      align-items: center;
     }
   </style>
 </head>
 <body>
 
-  <form id="workshopForm">
-    <h1>השארת פרטים עבור הסדנאות</h1>
+  <div class="container">
+    <div class="logo">
+      <img src="https://github.com/sharonif2/lecture-form/blob/main/Adif%20logo.PNG?raw=true" alt="לוגו החברה">
+    </div>
 
-    <label for="name">שם:</label>
-    <input type="text" id="name" name="name" placeholder="הכנס שם" required>
+    <h1>מחולל הצעות לסדנאות AI לסוכני ביטוח</h1>
 
-    <label for="email">אימייל:</label>
-    <input type="email" id="email" name="email" placeholder="הכנס אימייל" required>
+    <form id="workshopForm">
+      <label for="name">שם:</label>
+      <input type="text" id="name" name="name" placeholder="הכנס שם" required>
 
-    <label for="phone">טלפון:</label>
-    <input type="tel" id="phone" name="phone" placeholder="הכנס טלפון" required>
+      <label for="email">אימייל:</label>
+      <input type="email" id="email" name="email" placeholder="הכנס אימייל" required>
 
-    <label for="experience">כמה שנים יש לך ניסיון?</label>
-    <input type="number" id="experience" name="experience" placeholder="שנות ניסיון" required>
+      <label for="phone">טלפון:</label>
+      <input type="tel" id="phone" name="phone" placeholder="הכנס טלפון" required>
 
-    <label for="clientCount">כמה לקוחות יש לך?</label>
-    <input type="number" id="clientCount" name="clientCount" placeholder="מספר לקוחות" required>
+      <label for="experience">ותק בענף (בנים):</label>
+      <input type="number" id="experience" name="experience" placeholder="שנות ניסיון" required>
 
-    <input type="submit" value="שלח">
-    
-    <p id="recommendation">נא למלא את הטופס כדי לקבל המלצה.</p>
-  </form>
+      <label for="clientCount">כמות לקוחות:</label>
+      <input type="number" id="clientCount" name="clientCount" placeholder="מספר לקוחות" required>
 
-  <div class="footer">
-    <h2>ירדן פלד</h2>
-    <p>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
+      <label>סוגי מוצרים:</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="carInsurance" name="productType" value="carInsurance"> ביטוח רכב</label>
+        <label><input type="checkbox" id="healthInsurance" name="productType" value="healthInsurance"> ביטוח בריאות</label>
+        <label><input type="checkbox" id="lifeInsurance" name="productType" value="lifeInsurance"> ביטוח חיים</label>
+        <label><input type="checkbox" id="liabilityInsurance" name="productType" value="liabilityInsurance"> ביטוח אחריות מקצועית</label>
+        <label><input type="checkbox" id="propertyInsurance" name="productType" value="propertyInsurance"> ביטוח דירה</label>
+        <label><input type="checkbox" id="businessInsurance" name="productType" value="businessInsurance"> ביטוח עסקי</label>
+        <label><input type="checkbox" id="pension" name="productType" value="pension"> פנסיה</label>
+        <label><input type="checkbox" id="savings" name="productType" value="savings"> חיסכון</label>
+      </div>
+
+      <label>מטרת שימוש:</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="operation" name="usageGoal" value="operation"> תפעול</label>
+        <label><input type="checkbox" id="marketing" name="usageGoal" value="marketing"> שיווק</label>
+        <label><input type="checkbox" id="service" name="usageGoal" value="service"> שירות</label>
+      </div>
+
+      <input type="submit" value="צור המלצה">
+      
+      <p id="recommendation">נא למלא את הטופס כדי לקבל המלצה.</p>
+    </form>
+
+    <div class="footer">
+      <h2>ירדן פלד</h2>
+      <p>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
+    </div>
   </div>
 
   <script>
@@ -139,8 +192,14 @@
       const experience = document.getElementById('experience').value;
       const clientCount = document.getElementById('clientCount').value;
 
+      // איסוף מוצרים
+      const selectedProducts = Array.from(document.querySelectorAll('input[name="productType"]:checked')).map(cb => cb.value);
+
+      // איסוף מטרות שימוש
+      const usageGoals = Array.from(document.querySelectorAll('input[name="usageGoal"]:checked')).map(cb => cb.value);
+
       // בדוק אם כל השדות מולאו כמו שצריך
-      if (!name || !email || !phone || !experience || !clientCount) {
+      if (!name || !email || !phone || !experience || !clientCount || selectedProducts.length === 0 || usageGoals.length === 0) {
         alert('נא למלא את כל השדות.');
         return;
       }
@@ -163,7 +222,9 @@
         phone: phone,
         experience: experience,
         clientCount: clientCount,
-        recommendation: recommendation  // הוספת ההמלצה לנתונים שנשלחים
+        selectedProducts: selectedProducts,
+        usageGoals: usageGoals,
+        recommendation: recommendation
       };
 
       // הדפסת הנתונים לקונסול לבדיקת תקינות
