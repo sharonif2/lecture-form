@@ -71,6 +71,11 @@
       box-sizing: border-box;
     }
 
+    /* יישור שדה הטלפון מימין לשמאל */
+    input[type="tel"] {
+      direction: rtl;
+    }
+
     input[type="submit"] {
       width: 100%;
       padding: 12px;
@@ -193,6 +198,19 @@
       font-size: 14px;
       color: #666666;
     }
+
+    /* עיצוב התחתית החדשה */
+    .footer-in-form {
+      font-size: 16px;
+      font-weight: bold; /* הדגשת הכיתוב */
+      margin-top: 30px;
+      color: #333333;
+      text-align: center;
+    }
+
+    .footer-in-form p:first-child {
+      font-size: 18px; /* הגדלת הכיתוב "ירדן פלד" */
+    }
   </style>
 </head>
 <body>
@@ -249,12 +267,12 @@
         <p id="recommendation"></p>
       </div>
 
+      <!-- הכיתוב החדש בתוך הפורם -->
+      <div class="footer-in-form">
+        <p>ירדן פלד</p>
+        <p>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
+      </div>
     </form>
-
-    <div class="footer">
-      <h2>ירדן פלד</h2>
-      <p>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
-    </div>
 
     <div class="footer-bottom">
       נבנה ע"י שרון איפראימוב - מומחה לאוטומציות עסקיות ותהליכים דיגיטליים
