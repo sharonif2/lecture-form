@@ -87,42 +87,57 @@
       background-color: #c1272d;
     }
 
-    p#recommendation {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #d32f2f;
-      text-align: center;
+    /* עיצוב לפופאפ */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffffff;
+      padding: 20px;
+      border: 2px solid #d32f2f;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      z-index: 100;
     }
 
-    .footer {
-      margin-top: 40px;
-      text-align: center;
-      color: #666666;
-    }
-
-    .footer h2 {
+    .popup h2 {
       margin: 0;
-      font-size: 20px;
+      font-size: 24px;
+      color: #d32f2f;
+    }
+
+    .popup p {
+      margin: 10px 0;
+      font-size: 16px;
       color: #333333;
     }
 
-    .footer p {
-      margin: 5px 0;
+    .popup button {
+      background-color: #d32f2f;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
       font-size: 16px;
-      color: #999999;
     }
 
-    .checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      margin-bottom: 20px;
+    .popup button:hover {
+      background-color: #c1272d;
     }
 
-    .checkbox-group label {
-      width: 48%;
-      display: flex;
-      align-items: center;
+    /* עיצוב לרקע השקוף מאחורי הפופאפ */
+    .popup-background {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 99;
     }
   </style>
 </head>
@@ -181,6 +196,15 @@
     </div>
   </div>
 
+  <!-- פופאפ -->
+  <div class="popup-background"></div>
+  <div class="popup" id="popup">
+    <h2>תודה על פנייתך!</h2>
+    <p id="popupRecommendation"></p>
+    <p>הפרטים התקבלו וניצור איתך קשר בקרוב.</p>
+    <button onclick="closePopup()">סגור</button>
+  </div>
+
   <script>
     document.getElementById('workshopForm').addEventListener('submit', function(event) {
       event.preventDefault();  // עוצר את רענון הדף
@@ -215,6 +239,13 @@
       }
       document.getElementById('recommendation').innerText = recommendation;
 
+      // הצגת ההמלצה בפופאפ
+      document.getElementById('popupRecommendation').innerText = recommendation;
+
+      // הצגת הפופאפ
+      document.querySelector('.popup-background').style.display = 'block';
+      document.getElementById('popup').style.display = 'block';
+
       // הנתונים שנשלחים לוובהוק
       const formData = {
         name: name,
@@ -241,13 +272,17 @@
       .then(response => response.text())  // קבלת התשובה כטקסט
       .then(data => {
         console.log('תשובה מהשרת:', data);
-        alert('הפרטים נשלחו בהצלחה!');
       })
       .catch((error) => {
         console.error('שגיאה בשליחת הפרטים:', error);
         alert('שגיאה בשליחת הפרטים!');
       });
     });
+
+    function closePopup() {
+      document.querySelector('.popup-background').style.display = 'none';
+      document.getElementById('popup').style.display = 'none';
+    }
   </script>
 </body>
 </html>
