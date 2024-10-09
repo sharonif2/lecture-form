@@ -87,6 +87,28 @@
       background-color: #c1272d;
     }
 
+    /* טקסט קטן מתחת לכפתור */
+    .consent-text {
+      font-size: 12px;
+      color: #555555;
+      margin-top: 10px;
+    }
+
+    /* עיצוב למסגרת ההמלצה */
+    #recommendation-box {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px solid #d32f2f;
+      background-color: #fff;
+      border-radius: 8px;
+      color: #d32f2f;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
     .checkbox-group {
       display: flex;
       justify-content: space-between;
@@ -212,8 +234,15 @@
       </div>
 
       <input type="submit" value="צור המלצה">
-      
-      <p id="recommendation">נא למלא את הטופס כדי לקבל המלצה.</p>
+
+      <!-- טקסט ההסכמה הקטן -->
+      <p class="consent-text">*בלחיצה על כפתור המלצה אני מאשר קבלת דיוור ושיחת טלפון מירדן פלד</p>
+
+      <!-- תיבת המלצה שתוצג אחרי שליחת הטופס -->
+      <div id="recommendation-box">
+        <p id="recommendation"></p>
+      </div>
+
     </form>
 
     <div class="footer">
@@ -292,6 +321,9 @@
       // הצגת הפופאפ
       document.querySelector('.popup-background').style.display = 'block';
       document.getElementById('popup').style.display = 'block';
+
+      // הצגת תיבת ההמלצה לאחר סגירת הפופאפ
+      document.getElementById('recommendation-box').style.display = 'block';
 
       // שליחת הנתונים ל-Webhook
       const formData = {
