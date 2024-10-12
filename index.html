@@ -232,11 +232,19 @@
       <label for="phone">טלפון:</label>
       <input type="tel" id="phone" name="phone" placeholder="הכנס טלפון" required>
 
-      <label for="experience">ותק בענף (בנים):</label>
+      <label for="experience">ותק בענף (שנים):</label>
       <input type="number" id="experience" name="experience" placeholder="שנות ניסיון" required>
 
       <label for="clientCount">כמות לקוחות:</label>
       <input type="number" id="clientCount" name="clientCount" placeholder="מספר לקוחות" required>
+
+      <label for="employeesCount">מספר עובדים:</label>
+      <input type="number" id="employeesCount" name="employeesCount" placeholder="מספר עובדים" required>
+
+      <label>האם יש לך מערכת CRM?</label>
+      <div>
+        <label><input type="checkbox" id="crmSystem" name="crmSystem" value="yes"> כן</label>
+      </div>
 
       <label>סוגי מוצרים:</label>
       <div class="checkbox-group">
@@ -264,6 +272,7 @@
 
       <!-- תיבת המלצה שתוצג אחרי שליחת הטופס -->
       <div id="recommendation-box">
+        <p id="workshopTitle"></p> <!-- שם הסדנה -->
         <p id="recommendation"></p>
       </div>
 
@@ -282,7 +291,7 @@
   <!-- פופאפ -->
   <div class="popup-background"></div>
   <div class="popup" id="popup">
-    <h2>תודה על פנייתך!</h2>
+    <h2 id="popupWorkshopTitle">תודה על פנייתך!</h2>
     <p class="recommendation" id="popupRecommendation"></p>
     <p>הפרטים התקבלו וניצור איתך קשר בקרוב.</p>
     <p class="footer">ירדן פלד<br>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
@@ -299,52 +308,41 @@
       const phone = document.getElementById('phone').value;
       const experience = parseInt(document.getElementById('experience').value, 10); // שנות ניסיון
       const clientCount = parseInt(document.getElementById('clientCount').value, 10); // מספר לקוחות
+      const employeesCount = parseInt(document.getElementById('employeesCount').value, 10); // מספר עובדים
+      const crmSystem = document.getElementById('crmSystem').checked; // בדיקה אם יש מערכת CRM
 
-      // איסוף מוצרים
+      // איסוף מוצרים נבחרים
       const selectedProducts = Array.from(document.querySelectorAll('input[name="productType"]:checked')).map(cb => cb.value);
 
       // איסוף מטרות שימוש
       const usageGoals = Array.from(document.querySelectorAll('input[name="usageGoal"]:checked')).map(cb => cb.value);
 
       // בדוק אם כל השדות מולאו כמו שצריך
-      if (!name || !email || !phone || isNaN(experience) || isNaN(clientCount) || selectedProducts.length === 0 || usageGoals.length === 0) {
+      if (!name || !email || !phone || isNaN(experience) || isNaN(clientCount) || isNaN(employeesCount) || usageGoals.length === 0 || selectedProducts.length === 0) {
         alert('נא למלא את כל השדות.');
         return;
       }
 
-      // לוגיקת המחולל - המלצה על בסיס ניסיון, לקוחות, ומוצרים נבחרים
+      // לוגיקת המחולל - המלצה על בסיס ניסיון, לקוחות, עובדים ומערכת CRM
       let recommendation = '';
+      let workshopTitle = '';
 
-      if (experience < 5) {
-        if (clientCount < 10) {
-          recommendation = 'מומלץ להשתתף בסדנה למתחילים עם דגש על גיוס לקוחות חדשים!';
-        } else {
-          recommendation = 'מומלץ להשתתף בסדנה למתחילים עם דגש על שימור לקוחות קיימים!';
-        }
-      } else if (experience >= 5 && experience <= 10) {
-        if (clientCount < 20) {
-          recommendation = 'מומלץ להשתתף בסדנה למתקדמים עם דגש על הרחבת פורטפוליו מוצרים!';
-        } else {
-          recommendation = 'מומלץ להשתתף בסדנה למתקדמים עם דגש על יעול תהליכים ושירות לקוחות!';
-        }
-      } else {
-        if (clientCount < 50) {
-          recommendation = 'מומלץ להשתתף בסדנה למתקדמים עם דגש על פיתוח עסקי ואסטרטגיות צמיחה!';
-        } else {
-          recommendation = 'מומלץ להשתתף בסדנה מתקדמת עם דגש על ניהול לקוחות בקנה מידה גדול!';
-        }
-      }
-
-      // בדיקת מוצרים נבחרים - אפשר להוסיף המלצה לפי סוג המוצרים
-      if (selectedProducts.includes('lifeInsurance') && selectedProducts.includes('businessInsurance')) {
-        recommendation += ' מומלץ להתרכז בניהול מוצרים בעסק והרחבת קווי המוצרים.';
-      } else if (selectedProducts.includes('carInsurance')) {
-        recommendation += ' כדאי להעמיק בתחום ביטוח הרכב עם דגש על שירות לקוחות מהיר.';
+      if (experience <= 5 && clientCount <= 400 && usageGoals.includes('marketing') && usageGoals.includes('service')) {
+        workshopTitle = 'סדנת הקדמה/הכרות';
+        recommendation = 'מומלץ לך להשתתף בסדנת כלים דיגיטליים ובינה מלאכותית להכרות עם הכלים השונים וייעול השיווק והמכירות שלך.';
+      } else if (experience > 5 && experience <= 10 && clientCount >= 500 && clientCount <= 1000) {
+        workshopTitle = 'סדנת בסיס';
+        recommendation = 'מומלץ לך סדנא של לפחות שני מפגשים עם הכרות עם כלי הבינה המלאכותית וכלי אוטומציה לשיפור השירות ושימור הלקוחות. בסדנא תלמד כיצד לייעל את הפעילות שלך.';
+      } else if (experience > 10 || clientCount > 1000) {
+        workshopTitle = 'הסוכן הדיגיטלי';
+        recommendation = 'סדנא מעמיקה ופרקטית הכוללת את כל הכלים והיכולות שיעזרו לך בשירות, תפעול ושיווק. תוכל להקים את הפעילות לקידום הסוכנות שלך.';
       }
 
       // הצגת ההמלצה בטופס ובפופאפ
       document.getElementById('recommendation').innerText = recommendation;
+      document.getElementById('workshopTitle').innerText = workshopTitle; // הצגת שם הסדנה בתיבת ההמלצה
       document.getElementById('popupRecommendation').innerText = recommendation;
+      document.getElementById('popupWorkshopTitle').innerText = workshopTitle; // כותרת הפופאפ
 
       // הצגת הפופאפ
       document.querySelector('.popup-background').style.display = 'block';
@@ -360,8 +358,10 @@
         phone: phone,
         experience: experience,
         clientCount: clientCount,
-        selectedProducts: selectedProducts,
+        employeesCount: employeesCount,
+        crmSystem: crmSystem,
         usageGoals: usageGoals,
+        selectedProducts: selectedProducts,
         recommendation: recommendation
       };
 
