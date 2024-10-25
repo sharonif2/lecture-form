@@ -279,7 +279,7 @@
       <!-- הכיתוב החדש בתוך הפורם -->
       <div class="footer-in-form">
         <p>ירדן פלד</p>
-        <p>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
+        <p>מומחה לטרנספורמציה דיגיטלית מבוססת בינה מלאכותית בענף הביטוח</p>
       </div>
     </form>
 
@@ -294,102 +294,87 @@
     <h2 id="popupTitle">תודה על פנייתך!</h2>
     <p class="recommendation" id="popupRecommendation"></p>
     <p>הפרטים התקבלו וניצור איתך קשר בקרוב.</p>
-    <p class="footer">ירדן פלד<br>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
+    <p class="footer">ירדן פלד<br>מומחה לטרנספורמציה דיגיטלית מבוססת בינה מלאכותית בענף הביטוח</p>
     <button onclick="closePopup()">סגור</button>
   </div>
 
   <script>
     document.getElementById('workshopForm').addEventListener('submit', function(event) {
-      event.preventDefault();  // עוצר את רענון הדף
+        event.preventDefault();  // עוצר את רענון הדף
 
-      // איסוף הנתונים מהטופס
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const phone = document.getElementById('phone').value;
-      const experience = parseInt(document.getElementById('experience').value, 10); // שנות נסיון
-      const clientCount = parseInt(document.getElementById('clientCount').value, 10); // מספר לקוחות
-      const employeesCount = parseInt(document.getElementById('employeesCount').value, 10); // מספר עובדים
-      const crmSystemInput = document.querySelector('input[name="crmSystem"]:checked');
-      const crmSystem = crmSystemInput ? crmSystemInput.value : null; // בדיקה אם יש מערכת CRM
+        // איסוף הנתונים מהטופס
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const clientCount = parseInt(document.getElementById('clientCount').value, 10); // מספר לקוחות
 
-      // איסוף מוצרים נבחרים
-      const selectedProducts = Array.from(document.querySelectorAll('input[name="productType"]:checked')).map(cb => cb.value);
+        // בדוק אם כל השדות מולאו כמו שצריך
+        if (!name || !email || !phone || isNaN(clientCount)) {
+            alert('נא למלא את כל השדות.');
+            return;
+        }
 
-      // איסוף מטרות שימוש
-      const usageGoals = Array.from(document.querySelectorAll('input[name="usageGoal"]:checked')).map(cb => cb.value);
+        // לוגיקת המחולל - המלצה על בסיס כמות לקוחות בלבד
+        let recommendationTitle = '';
+        let recommendationText = '';
 
-      // בדוק אם כל השדות מולאו כמו שצריך
-      if (!name || !email || !phone || isNaN(experience) || isNaN(clientCount) || isNaN(employeesCount) || !crmSystem || usageGoals.length === 0 || selectedProducts.length === 0) {
-        alert('נא למלא את כל השדות.');
-        return;
-      }
+        if (clientCount <= 500) {
+            recommendationTitle = 'סדנא בסיסית';
+            recommendationText = 'חצי יום הכרות עם מגוון כלי בינה מלאכותית לייעול.';
+        } else if (clientCount > 500 && clientCount <= 1000) {
+            recommendationTitle = 'סדנא מתקדמת';
+            recommendationText = 'שני חצאי ימים הכוללים הכרות והתנסות במגוון כלי הבינה המלאכותית והכרות עם כלי אוטומציה. בסדנא נתאמן על פרומפטים ועל ייעול הפעילות באמצעות אוטומציה.';
+        } else if (clientCount > 1000) {
+            recommendationTitle = 'סדנת הסוכן הדיגיטלי';
+            recommendationText = 'סדנא בת 6 מפגשים מעמיקים הכוללים בניית תוכניות עבודה באמצעות כלי בינה מלאכותית והכרות ותפעול אוטומציות שונות. המשתתפים יגדירו ויבנו בעזרת מומחים כלי לבחירתם.';
+        }
 
-      // לוגיקת המחולל - המלצה על בסיס נסיון, לקוחות, עובדים ומערכת CRM
-      let recommendationTitle = '';
-      let recommendationText = '';
+        // הצגת המלצה בטופס ובפופאפ
+        document.getElementById('recommendation').innerText = recommendationTitle + ' - ' + recommendationText;
+        document.getElementById('popupTitle').innerText = recommendationTitle;
+        document.getElementById('popupRecommendation').innerText = recommendationText;
 
-      if (experience <= 5 && clientCount <= 400) {
-        recommendationTitle = 'סדנת הקדמה/הכרות';
-        recommendationText = 'מומלץ לך להשתתף בסדנת כלים דיגיטליים ובינה מלאכותית להכרות עם הכלים השונים ויעול השיווק והמכירות שלך.';
-      } else if ((experience > 5 && experience <= 10) || (clientCount >= 400 && clientCount <= 1000) || employeesCount <= 5) {
-        recommendationTitle = 'סדנת בסיס';
-        recommendationText = 'מומלץ לך סדנא של לפחות שני מפגשים עם הכרות עם כלי הבינה המלאכותית וכלי אוטומציה לשיפור השירות ושימור הלקוחות. בסדנא תלמד כיצד ליעל את הפעילות שלך.';
-      } else if (experience > 10 || clientCount > 1000 || employeesCount > 5) {
-        recommendationTitle = 'הסוכן הדיגיטלי';
-        recommendationText = 'מומלץ לך סדנא מעמיקה ופרקטית הכוללת את כל הכלים ויכולות הקיימים שיסיעו לך בשירות, תפעול ושיווק ותוכל להקים את הפעילות לקידום הסוכנות שלך.';
-      }
+        // הצגת הפופאפ
+        document.querySelector('.popup-background').style.display = 'block';
+        document.getElementById('popup').style.display = 'block';
 
-      // הצגת המלצה בטופס ובפופאפ
-      document.getElementById('recommendation').innerText = recommendationTitle + ' - ' + recommendationText;
-      document.getElementById('popupTitle').innerText = recommendationTitle;
-      document.getElementById('popupRecommendation').innerText = recommendationText;
+        // הצגת תיבת המלצה לאחר סגירת הפופאפ
+        document.getElementById('recommendation-box').style.display = 'block';
 
-      // הצגת הפופאפ
-      document.querySelector('.popup-background').style.display = 'block';
-      document.getElementById('popup').style.display = 'block';
+        // שליחת הנתונים ל-שליחת Webhook
+        const formData = {
+            name: name,
+            email: email,
+            phone: phone,
+            clientCount: clientCount,
+            recommendationTitle: recommendationTitle,
+            recommendationText: recommendationText
+        };
 
-      // הצגת תיבת המלצה לאחר סגירת הפופאפ
-      document.getElementById('recommendation-box').style.display = 'block';
+        // הדפסת הנתונים לקונסול לבדיקת תקינות
+        console.log(JSON.stringify(formData));
 
-      // שליחת הנתונים ל-שליחת Webhook
-      const formData = {
-        name: name,
-        email: email,
-        phone: phone,
-        experience: experience,
-        clientCount: clientCount,
-        employeesCount: employeesCount,
-        crmSystem: crmSystem,
-        usageGoals: usageGoals,
-        selectedProducts: selectedProducts,
-        recommendationTitle: recommendationTitle,
-        recommendationText: recommendationText
-      };
-
-      // הדפסת הנתונים לקונסול לבדיקת תקינות
-      console.log(JSON.stringify(formData));
-
-      // שליחת הנתונים ל-Webhook
-      fetch('https://hook.eu1.make.com/jq30tqzj467p7as4s28slrsr1yc4w4nw', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),  // המרת הנתונים לפורמט JSON
-      })
-      .then(response => response.text())  // קבלת התשובה כטקסט
-      .then(data => {
-        console.log('תשובה מהשרת:', data);
-      })
-      .catch((error) => {
-        console.error('שגיאה בשליחת הפרטים:', error);
-        alert('שגיאה בשליחת הפרטים!');
-      });
+        // שליחת הנתונים ל-Webhook
+        fetch('https://hook.eu1.make.com/jq30tqzj467p7as4s28slrsr1yc4w4nw', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),  // המרת הנתונים לפורמט JSON
+        })
+        .then(response => response.text())  // קבלת התשובה כטקסט
+        .then(data => {
+            console.log('תשובה מהשרת:', data);
+        })
+        .catch((error) => {
+            console.error('שגיאה בשליחת הפרטים:', error);
+            alert('שגיאה בשליחת הפרטים!');
+        });
     });
 
     function closePopup() {
-      document.querySelector('.popup-background').style.display = 'none';
-      document.getElementById('popup').style.display = 'none';
+        document.querySelector('.popup-background').style.display = 'none';
+        document.getElementById('popup').style.display = 'none';
     }
   </script>
 </body>
