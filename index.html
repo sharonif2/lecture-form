@@ -269,7 +269,7 @@
       <input type="submit" value="צור המלצה">
 
       <!-- טקסט ההסכמה הקטן -->
-      <p class="consent-text">בלחיצה על כפתור ההמלצה אני מאשר קבלת דיוור ושיחת טלפון מירדן פלד</p>
+      <p class="consent-text">כלחצה על כפתור המלצה אני מאשר קבלת דיוור ושיחת טלפון מירדן פלד</p>
 
       <!-- תיבת המלצה שתוצג אחרי שליחת הטופס -->
       <div id="recommendation-box">
@@ -279,7 +279,7 @@
       <!-- הכיתוב החדש בתוך הפורם -->
       <div class="footer-in-form">
         <p>ירדן פלד</p>
-        <p>מומחה לטרנספורמציה דיגיטלית מבוססת בינה מלאכותית בענף הביטוח</p>
+        <p>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
       </div>
     </form>
 
@@ -294,7 +294,7 @@
     <h2 id="popupTitle">תודה על פנייתך!</h2>
     <p class="recommendation" id="popupRecommendation"></p>
     <p>הפרטים התקבלו וניצור איתך קשר בקרוב.</p>
-    <p class="footer">ירדן פלד<br>מומחה לטרנספורמציה דיגיטלית מבוססת בינה מלאכותית בענף הביטוח</p>
+    <p class="footer">ירדן פלד<br>מומחה לאוטומציה מבוססת בינה מלאכותית בענף הביטוח</p>
     <button onclick="closePopup()">סגור</button>
   </div>
 
@@ -307,6 +307,12 @@
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
         const clientCount = parseInt(document.getElementById('clientCount').value, 10); // מספר לקוחות
+        const experience = parseInt(document.getElementById('experience').value, 10); // ותק בענף
+        const employeesCount = parseInt(document.getElementById('employeesCount').value, 10); // מספר עובדים
+        const crmSystemInput = document.querySelector('input[name="crmSystem"]:checked');
+        const crmSystem = crmSystemInput ? crmSystemInput.value : null; // בדיקה אם יש מערכת CRM
+        const selectedProducts = Array.from(document.querySelectorAll('input[name="productType"]:checked')).map(cb => cb.value); // סוגי מוצרים
+        const usageGoals = Array.from(document.querySelectorAll('input[name="usageGoal"]:checked')).map(cb => cb.value); // מטרת שימוש
 
         // בדוק אם כל השדות מולאו כמו שצריך
         if (!name || !email || !phone || isNaN(clientCount)) {
@@ -320,13 +326,13 @@
 
         if (clientCount <= 500) {
             recommendationTitle = 'סדנא בסיסית';
-            recommendationText = 'חצי יום הכרות עם מגוון כלי בינה מלאכותית לייעול הפעילות.';
+            recommendationText = 'חצי יום הכרות עם מגוון כלי בינה מלאכותית לייעול. מיועד לסוכן עם עד 500 לקוחות.';
         } else if (clientCount > 500 && clientCount <= 1000) {
             recommendationTitle = 'סדנא מתקדמת';
-            recommendationText = 'שני חצאי ימים הכוללים הכרות והתנסות במגוון כלי הבינה המלאכותית והכרות עם כלי אוטומציה. בסדנא נתאמן על פרומפטים ועל ייעול הפעילות באמצעות אוטומציה.';
+            recommendationText = 'שני חצאי ימים הכוללים הכרות והתנסות במגוון כלי הבינה המלאכותית והכרות עם כלי אוטומציה. בסדנא נתאמן על פרומפטים ועל ייעול הפעילות באמצעות אוטומציה. מתאים לסוכן שיש לו בין 501 ועד 1000 לקוחות.';
         } else if (clientCount > 1000) {
             recommendationTitle = 'סדנת הסוכן הדיגיטלי';
-            recommendationText = 'סדנא בת 6 מפגשים מעמיקים הכוללים בניית תוכניות עבודה באמצעות כלי בינה מלאכותית והכרות ותפעול אוטומציות שונות. המשתתפים יגדירו ויבנו בעזרת מומחים כלי לבחירתם.';
+            recommendationText = 'סדנא בת 6 מפגשים מעמיקים הכוללים בניית תוכניות עבודה באמצעות כלי בינה מלאכותית והכרות ותפעול אוטומציות שונות. המשתתפים יגדירו ויבנו בעזרת מומחים כלי לבחירתם. מתאים לסוכן עם 1001 לקוחות ומעלה.';
         }
 
         // הצגת המלצה בטופס ובפופאפ
@@ -347,6 +353,11 @@
             email: email,
             phone: phone,
             clientCount: clientCount,
+            experience: experience,
+            employeesCount: employeesCount,
+            crmSystem: crmSystem,
+            selectedProducts: selectedProducts,
+            usageGoals: usageGoals,
             recommendationTitle: recommendationTitle,
             recommendationText: recommendationText
         };
@@ -355,7 +366,7 @@
         console.log(JSON.stringify(formData));
 
         // שליחת הנתונים ל-Webhook
-        fetch('https://hook.eu2.make.com/po0ri6o2hwxqhs8yyjngr8ynvl8xpqri', {
+        fetch('https://hook.eu1.make.com/jq30tqzj467p7as4s28slrsr1yc4w4nw', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
