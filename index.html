@@ -223,8 +223,7 @@
         }
 
         // יצירת דף חדש עם ההמלצה
-        const newWindow = window.open('', '_blank');
-        newWindow.document.write(`
+        const newContent = `
           <!DOCTYPE html>
           <html lang="he">
           <head>
@@ -265,7 +264,10 @@
             </div>
           </body>
           </html>
-        `);
+        `;
+document.open();
+document.write(newContent);
+document.close();
 
         // שליחת הנתונים ל-Webhook
         const formData = {
