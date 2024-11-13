@@ -99,117 +99,20 @@
       margin-top: 10px;
     }
 
-    /* עיצוב למסגרת המלצה */
-    #recommendation-box {
-      display: none;
-      margin-top: 20px;
-      padding: 15px;
-      border: 2px solid #d32f2f;
-      background-color: #fff;
-      border-radius: 8px;
-      color: #d32f2f;
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .checkbox-group {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-
-    .checkbox-group label {
-      width: 48%;
-      display: flex;
-      align-items: center;
-    }
-
-    /* עיצוב לפופאפ */
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #ffffff;
-      padding: 20px;
-      border: 2px solid #d32f2f;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-      z-index: 100;
-      text-align: center; /* כיתוב ממורכז */
-    }
-
-    .popup h2 {
-      margin: 0;
-      font-size: 24px;
-      color: #d32f2f;
-    }
-
-    .popup p {
-      margin: 10px 0;
-      font-size: 16px;
-      color: #333333;
-    }
-
-    .popup .recommendation {
-      font-weight: bold; /* הדגשת המלצה */
-      font-size: 18px;
-      color: #d32f2f;
-    }
-
-    .popup button {
-      background-color: #d32f2f;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 15px;
-    }
-
-    .popup button:hover {
-      background-color: #c1272d;
-    }
-
-    .popup .footer {
-      margin-top: 20px;
-      font-size: 16px;
-      color: #666666;
-    }
-
-    /* עיצוב לרקע השקוף מאחורי הפופאפ */
-    .popup-background {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 99;
-    }
-
     .footer-bottom {
       margin-top: 30px;
       font-size: 14px;
       color: #666666;
     }
 
-    /* עיצוב התחתית החדשה */
-    .footer-in-form {
-      font-size: 16px;
-      font-weight: bold; /* הדגשת הכיתוב */
-      margin-top: 30px;
-      color: #333333;
-      text-align: center;
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
     }
 
-    .footer-in-form p:first-child {
-      font-size: 18px; /* הגדלת הכיתוב "ירדן פלד" */
+    .checkbox-group label {
+      width: 48%;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -269,14 +172,8 @@
       <input type="submit" value="צור המלצה">
 
       <!-- טקסט ההסכמה הקטן -->
-      <p class="consent-text">בלחיצה על כפתור ההמלצה אני מאשר קבלת דיוור ושיחת טלפון מירדן פלד</p>
-
-      <!-- תיבת המלצה שתוצג אחרי שליחת הטופס -->
-      <div id="recommendation-box">
-        <p id="recommendation"></p>
-      </div>
-
-      <!-- הכיתוב החדש בתוך הפורם -->
+      <p class="consent-text">בלחיצה על כפתור המלצה אני מאשר קבלת דיוור ושיחת טלפון מירדן פלד</p>
+          <!-- הכיתוב החדש בתוך הפורם -->
       <div class="footer-in-form">
         <p>ירדן פלד</p>
         <p>מומחה לטרנספורמציה דיגיטלית מבוססת בינה מלאכותית בענף הביטוח</p>
@@ -286,16 +183,6 @@
     <div class="footer-bottom">
       נבנה ע"י שרון איפראימוב - מומחה לאוטומציות עסקיות ותהליכים דיגיטליים
     </div>
-  </div>
-
-  <!-- פופאפ -->
-  <div class="popup-background"></div>
-  <div class="popup" id="popup">
-    <h2 id="popupTitle">תודה על פנייתך!</h2>
-    <p class="recommendation" id="popupRecommendation"></p>
-    <p>הפרטים התקבלו וניצור איתך קשר בקרוב.</p>
-    <p class="footer">ירדן פלד<br>מומחה לטרנספורמציה דיגיטלית מבוססת בינה מלאכותית בענף הביטוח</p>
-    <button onclick="closePopup()">סגור</button>
   </div>
 
   <script>
@@ -332,22 +219,55 @@
             recommendationText = 'שני חצאי ימים הכוללים הכרות והתנסות במגוון כלי הבינה המלאכותית והכרות עם כלי אוטומציה. בסדנא נתאמן על פרומפטים ועל ייעול הפעילות באמצעות אוטומציה.';
         } else if (clientCount > 1000) {
             recommendationTitle = 'סדנת הסוכן הדיגיטלי';
-            recommendationText = 'סדנא בת 6 מפגשים מעמיקים הכוללים בניית תוכניות עבודה באמצעות כלי בינה מלאכותית והכרות ותפעול אוטומציות שונות. המשתתפים יגדירו ויבנו בעזרת מומחים כלי לבחירתם.';
+            recommendationText = 'סדנא בת 6 מפגשים מעמיקים הכוללים בניית תוכניות עבודת כלי בינה מלאכותית והכרות ותפעול אוטומציות שונות. המשתתפים יגדירו ויבנו בעזרת מומחים כלי לבחירתם.';
         }
 
-        // הצגת המלצה בטופס ובפופאפ
-        document.getElementById('recommendation').innerText = recommendationTitle + ' - ' + recommendationText;
-        document.getElementById('popupTitle').innerText = recommendationTitle;
-        document.getElementById('popupRecommendation').innerText = recommendationText;
+        // יצירת דף חדש עם ההמלצה
+        const newWindow = window.open('', '_blank');
+        newWindow.document.write(`
+          <!DOCTYPE html>
+          <html lang="he">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>המלצה לסדנה</title>
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+            <style>
+              body {
+                font-family: 'Open Sans', sans-serif;
+                background-color: #ffffff;
+                color: #333333;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                padding: 20px;
+                direction: rtl;
+                text-align: center;
+              }
+              .logo img {
+                max-width: 250px;
+                height: auto;
+                margin-top: 30px;
+              }
+            </style>
+          </head>
+          <body>
+            <h1 style="color: #d32f2f;">המלצה לסדנה</h1>
+            <h2 style="color: #d32f2f;">${recommendationTitle}</h2>
+            <p>${recommendationText}</p>
+            <p>הפרטים התקבלו וניצור איתך קשר בקרוב.</p>
+            <p>ירדן פלד<br>מומחה לטרנספורמציה דיגיטלית מבוססת בינה מלאכותית בענף הביטוח</p>
+            <div class="logo">
+              <img src="https://github.com/sharonif2/lecture-form/blob/main/Adif%20logo.PNG?raw=true" alt="לוגו החברה">
+            </div>
+          </body>
+          </html>
+        `);
 
-        // הצגת הפופאפ
-        document.querySelector('.popup-background').style.display = 'block';
-        document.getElementById('popup').style.display = 'block';
-
-        // הצגת תיבת המלצה לאחר סגירת הפופאפ
-        document.getElementById('recommendation-box').style.display = 'block';
-
-        // שליחת הנתונים ל-שליחת Webhook
+        // שליחת הנתונים ל-Webhook
         const formData = {
             name: name,
             email: email,
@@ -362,10 +282,6 @@
             recommendationText: recommendationText
         };
 
-        // הדפסת הנתונים לקונסול לבדיקת תקינות
-        console.log(JSON.stringify(formData));
-
-        // שליחת הנתונים ל-Webhook
         fetch('https://hook.eu2.make.com/po0ri6o2hwxqhs8yyjngr8ynvl8xpqri', {
             method: 'POST',
             headers: {
@@ -382,11 +298,6 @@
             alert('שגיאה בשליחת הפרטים!');
         });
     });
-
-    function closePopup() {
-        document.querySelector('.popup-background').style.display = 'none';
-        document.getElementById('popup').style.display = 'none';
-    }
   </script>
 </body>
 </html>
